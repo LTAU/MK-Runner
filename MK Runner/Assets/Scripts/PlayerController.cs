@@ -22,25 +22,18 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        /*Touch Controls
-         *
-         * if (Input.touchCount > 0)
+        //Touch Controls
+         
+        /* if (Input.touchCount > 0)
          {
              Jump();
 
 
          }*/
 
-
-        if (Physics2D.IsTouchingLayers(playerCollider, groundLayer))
-        {
-            canJump = true;
-        }
-        else
-        {
-            canJump = false;
-
-        }
+        //Can jump if touching a ground object
+        canJump = Physics2D.IsTouchingLayers(playerCollider, groundLayer);
+        
 
         if (Input.GetMouseButtonDown(0) && canJump )
         {
@@ -49,7 +42,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    
+    private void Die()
+    {
+        GameEvents.InvokePlayerDeath();
+    }
 
     private void Jump()
     {

@@ -14,4 +14,13 @@ public static class GameEvents
         OnGameEnd.Invoke();
     }
 
+
+    public static event voidDelegate OnPlayerDeath;
+    public static void InvokePlayerDeath()
+    {
+
+        OnPlayerDeath.Invoke();
+    
+    }
+
 }
