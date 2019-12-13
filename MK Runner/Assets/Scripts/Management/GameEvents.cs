@@ -7,11 +7,12 @@ public static class GameEvents
     //Handles ingame events
 
     public delegate void voidDelegate();
+    public delegate void intDelegate(int i);
 
-    public static event voidDelegate OnGameEnd;
-    public static void InvokeGameEnd()
+    public static event voidDelegate OnGameOver;
+    public static void InvokeGameOver()
     {
-        OnGameEnd.Invoke();
+        OnGameOver.Invoke();
     }
 
 
@@ -29,4 +30,15 @@ public static class GameEvents
         OnSpeedIncrease.Invoke();
     }
 
+    public static event voidDelegate OnGameStart;
+    public static void InvokeGameStart()
+    {
+        OnGameStart.Invoke();
+    }
+
+    public static event intDelegate OnScoreChanged;
+    public static void InvokeScoreChange(int i)
+    {
+        OnScoreChanged.Invoke(i);
+    }
 }

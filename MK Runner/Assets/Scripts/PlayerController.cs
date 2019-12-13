@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public LayerMask deathLayer;
 
-    public bool canJump = true;
-    public bool alive = true;
+    public bool canJump = false;
+    public bool alive = false;
 
 
     private Rigidbody2D playerRB;
@@ -23,7 +23,15 @@ public class PlayerController : MonoBehaviour
         playerCollider = GetComponent<Collider2D>();
         playerRB = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<Animator>();
+        GameEvents.OnGameStart += OnGameStart;
     }
+
+    private void OnGameStart()
+    {
+
+        alive = true;
+    }
+
 
     private void Update()
     {
@@ -51,6 +59,7 @@ public class PlayerController : MonoBehaviour
                 Die();
             }
         }
+       
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -80,6 +89,8 @@ public class PlayerController : MonoBehaviour
         GameEvents.InvokePlayerDeath();
         playerRB.SetRotation(90f);
         playerAnim.SetTrigger("Death");
+       
+
     }
 
     //player jump

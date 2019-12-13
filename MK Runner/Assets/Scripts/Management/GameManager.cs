@@ -30,20 +30,29 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        currentGameSpeed = startingGameSpeed;
         GameEvents.OnPlayerDeath += PlayerDeath;
         GameEvents.OnSpeedIncrease += SpeedIncrease;
+        GameEvents.OnGameStart += OnGameStart;
     }
 
-   IEnumerator RunSession()
+    private void OnGameStart()
+    {
+        currentGameSpeed = startingGameSpeed;
+        StartCoroutine(RunSession());
+    }
+
+    IEnumerator RunSession()
     {
         while (playerIsAlive)
         {
             score += 1;
+            GameEvents.InvokeScoreChange(score);
             yield return new WaitForSeconds(.5f);
 
 
         }
+        yield return new WaitForSeconds(3f);
+        GameEvents.InvokeGameOver();
 
         
 
