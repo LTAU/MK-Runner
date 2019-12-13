@@ -22,7 +22,7 @@ public class LevelGenerator : MonoBehaviour
     {
         while (isActiveAndEnabled)
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2f);
             GeneratePlatform();
         }
 
@@ -33,7 +33,9 @@ public class LevelGenerator : MonoBehaviour
     private void GeneratePlatform()
     {
         GameObject plat = ObjectPoolManager.singleton.SpawnObject(platformPool);
-        plat.transform.position = new Vector3(25, Random.Range(-2f, 2f));
+        plat.transform.position = new Vector3(10
+            , Random.Range(-2f, 0f));
+        GameEvents.InvokeSpeedIncrease();
     }
 
     private void GenerateHazardousObstacle()

@@ -12,7 +12,7 @@ public class SpawnableObjectBase : MonoBehaviour
 
     private void Update()
     {
-        transform.position -= new Vector3(GameManager._instance.currentGameSpeed, 0, 0);
+        transform.position -= new Vector3(GameManager.singleton.currentGameSpeed, 0, 0);
         if (transform.position.x < -25)
         {
             Despawn();

@@ -868,7 +868,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074995041}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1101,6 +1101,11 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8288642343584640708, guid: 669a3706bc6187244b6c338f87f139a7,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 514737599, guid: 669a3706bc6187244b6c338f87f139a7, type: 3}
       propertyPath: groundLayer.m_Bits
       value: 512
@@ -1111,7 +1116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 514737599, guid: 669a3706bc6187244b6c338f87f139a7, type: 3}
       propertyPath: playerJump
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 669a3706bc6187244b6c338f87f139a7, type: 3}

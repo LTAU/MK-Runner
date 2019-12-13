@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager _instance;
+    public static GameManager singleton;
     
 
     public float startingGameSpeed;
@@ -17,10 +17,10 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (_instance == null)
+        if (singleton == null)
         {
 
-            _instance = this;
+            singleton = this;
         }
         else
         {
@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     {
         currentGameSpeed = startingGameSpeed;
         GameEvents.OnPlayerDeath += PlayerDeath;
+        GameEvents.OnSpeedIncrease += SpeedIncrease;
     }
 
    IEnumerator RunSession()
@@ -49,6 +50,14 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void SpeedIncrease()
+    {
+        currentGameSpeed += .01f;
+        if (currentGameSpeed > .25)
+        {
+            currentGameSpeed = .25f;
+        }
+    }
 
     private void PlayerDeath()
     {
