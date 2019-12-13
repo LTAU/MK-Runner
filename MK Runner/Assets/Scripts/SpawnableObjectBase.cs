@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class SpawnableObjectBase : MonoBehaviour
 {
+    bool moving = true;
 
     private void Start()
     {
-        
+        GameEvents.OnPlayerDeath += OnPlayerDeath;
     }
 
     private void Update()
     {
-        transform.position -= new Vector3(GameManager.singleton.currentGameSpeed, 0, 0);
-        if (transform.position.x < -25)
+        if (moving)
         {
-            Despawn();
+            transform.position -= new Vector3(GameManager.singleton.currentGameSpeed*Time.deltaTime, 0, 0);
+            if (transform.position.x < -25)
+            {
+                Despawn();
+            }
         }
     }
 
@@ -25,5 +29,10 @@ public class SpawnableObjectBase : MonoBehaviour
         transform.position = Vector3.zero;
         transform.SetParent(ObjectPoolManager.singleton.transform);
 
+    }
+
+    private void OnPlayerDeath()
+    {
+        moving = false;
     }
 }

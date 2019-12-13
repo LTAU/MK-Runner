@@ -52,15 +52,17 @@ public class GameManager : MonoBehaviour
 
     private void SpeedIncrease()
     {
-        currentGameSpeed += .01f;
-        if (currentGameSpeed > .25)
+        currentGameSpeed*=1.1f;
+        if (currentGameSpeed > 5)
         {
-            currentGameSpeed = .25f;
+            currentGameSpeed = 5f;
         }
     }
 
     private void PlayerDeath()
     {
         playerIsAlive = false;
+        
+        
     }
 }

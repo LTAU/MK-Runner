@@ -9,6 +9,9 @@ ModelImporter:
   - first:
       74: -3419257869308726280
     second: walk
+  - first:
+      74: -1246731831762816583
+    second: Armature|ArmatureAction
   externalObjects: {}
   materials:
     importMaterials: 1

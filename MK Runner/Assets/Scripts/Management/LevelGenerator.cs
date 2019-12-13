@@ -9,26 +9,42 @@ public class LevelGenerator : MonoBehaviour
     public GameObject hazards;
 
     private int platformPool;
+    private bool generateNewPlatforms = true;
 
     private void Start()
     {
         //initialise object pooling for gameobjects because they will get reused a  lot
         platformPool = ObjectPoolManager.singleton.CreatePool(platforms);
+        GameEvents.OnPlayerDeath += OnPlayerDeath;
         StartCoroutine(Generate());
+
     }
 
 
     IEnumerator Generate()
     {
-        while (isActiveAndEnabled)
+        yield return new WaitForSeconds(2f);
+        
+        while (generateNewPlatforms)
         {
-            yield return new WaitForSeconds(2f);
+            print(CalculateTime().ToString());
+
             GeneratePlatform();
+            yield return new WaitForSeconds(CalculateTime());
         }
 
     }
 
+    //This calculates how long to wait before the object has passed and a new one can be spawned. 
+    //Also adds a random gap between 1 and 3 units
+    private float CalculateTime()
+    {
+        float x = 6 / GameManager.singleton.currentGameSpeed;
+        x += (Random.Range(1f, 3f) )/ GameManager.singleton.currentGameSpeed;
+        return x;
+    }
 
+    
 
     private void GeneratePlatform()
     {
@@ -53,6 +69,9 @@ public class LevelGenerator : MonoBehaviour
 
     }
 
-
+    private void OnPlayerDeath()
+    {
+        generateNewPlatforms = false;
+    }
 
 }
