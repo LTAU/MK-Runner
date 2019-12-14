@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         playerRB = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<Animator>();
         GameEvents.OnGameStart += OnGameStart;
+        GameEvents.OnSpeedIncrease += OnSpeedChange;
         startPosition = transform.position;
     }
 
@@ -37,8 +38,13 @@ public class PlayerController : MonoBehaviour
         jumpCooldown = 0;
         transform.position = startPosition;
         playerRB.simulated = true;
-
+        playerAnim.Play("Run");
         alive = true;
+    }
+
+    private void OnSpeedChange()
+    {
+        playerAnim.SetFloat("Speed", GameManager.singleton.currentGameSpeed);
     }
 
 
@@ -61,11 +67,12 @@ public class PlayerController : MonoBehaviour
                 isJumping = true;
                 canJump = false;
                 playerRB.velocity = new Vector2(0, playerJumpVelocity);
-
+                playerAnim.SetBool("isJumping", true);
 
 
             }
 
+            //Continue jumping for up to 1/4 a second
             if (isJumping )
             {
                 if (jumpCooldown <= .25f)
@@ -75,20 +82,19 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    isJumping = false;
-                    jumpCooldown = 0;
+                    CompleteJump();
                 }
             }
            
-
+            //Stop jumping if click is released
             if (Input.GetMouseButtonUp(0))
             {
-               
-                isJumping = false;
-                jumpCooldown = 0;
+
+                CompleteJump();
 
             }
 
+            //if playercharacter is out of position, aim to move back into position
             if (transform.position.x != startPosition.x)
             {
                
@@ -103,6 +109,14 @@ public class PlayerController : MonoBehaviour
             }
         }
        
+    }
+
+    private void CompleteJump()
+    {
+        isJumping = false;
+        playerAnim.SetBool("isJumping", false);
+
+        jumpCooldown = 0;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

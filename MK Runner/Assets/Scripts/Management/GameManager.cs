@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     private void OnGameStart()
     {
         currentGameSpeed = startingGameSpeed;
+        playerIsAlive = true;
         StartCoroutine(RunSession());
     }
 
