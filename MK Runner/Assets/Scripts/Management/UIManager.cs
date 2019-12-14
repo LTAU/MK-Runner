@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    //Script to control the UI
     public Text title;
     public Text score;
     public GameObject menuUI;

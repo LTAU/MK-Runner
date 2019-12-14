@@ -6,7 +6,7 @@ public class LevelGenerator : MonoBehaviour
 {
 
     public GameObject[] platforms;
-    public GameObject hazards;
+    public GameObject[] hazards;
     public GameObject[] obstacles;
 
     public Transform obstacleParent;
@@ -16,9 +16,16 @@ public class LevelGenerator : MonoBehaviour
 
     private int[] platformPools;
     private int[] obstaclePools;
+    private int[] hazardPools;
+    private int OFFSET = 10;
 
     private bool generateNewPlatforms = true;
     private float platformLength;
+    private float currentHeight;
+
+    private float platformTimer;
+    private float spawnChance;
+    
 
     private void Start()
     {
@@ -36,6 +43,13 @@ public class LevelGenerator : MonoBehaviour
             obstaclePools[i] = ObjectPoolManager.singleton.CreatePool(obstacles[i]);
         }
 
+        hazardPools = new int[hazards.Length];
+        for (int i = 0; i < hazards.Length; i++)
+        {
+
+            hazardPools[i] = ObjectPoolManager.singleton.CreatePool(hazards[i]);
+        }
+
 
 
 
@@ -47,23 +61,42 @@ public class LevelGenerator : MonoBehaviour
     private void OnGameStart()
     {
         generateNewPlatforms = true;
-
+        platformTimer = 0f;
         StartCoroutine(Generate());
 
     }
 
     IEnumerator Generate()
     {
-        yield return new WaitForSeconds((Random.Range(1f, 2f)) / GameManager.singleton.currentGameSpeed);
+        
         
         while (generateNewPlatforms)
         {
+            if (platformTimer <= 0f)
+            {
+                GameEvents.InvokeSpeedIncrease();
 
-            platformLength = GeneratePlatform();
-            yield return new WaitForSeconds(CalculateTime(platformLength)/2);
-                            GenerateObstacle();
-            yield return new WaitForSeconds(CalculateTime(platformLength)/2);
-            yield return new WaitForSeconds(CalculateGapTime());
+                yield return new WaitForSeconds(CalculateGapTime());
+                currentHeight = Random.Range(-1f, 1f);
+                platformLength = GeneratePlatform();
+                platformTimer = CalculateTime(platformLength);
+            }
+            spawnChance = Random.value;
+            if (spawnChance <= .15f && spawnChance> .05f)
+            {
+                GenerateObstacle();
+
+            }
+            else if (spawnChance <= .05f && spawnChance > .025f)
+            {
+                GenerateHazardousObstacle();
+
+            }
+
+
+                yield return new WaitForSeconds(0.1f);
+            platformTimer -= .1f;
+
         }
 
     }
@@ -72,7 +105,7 @@ public class LevelGenerator : MonoBehaviour
     //Also adds a random gap between 1 and 3 units
     private float CalculateTime(float length)
     {
-        return length / GameManager.singleton.currentGameSpeed; ;
+        return length / GameManager.singleton.currentGameSpeed; 
     }
 
     private float CalculateGapTime()
@@ -84,24 +117,27 @@ public class LevelGenerator : MonoBehaviour
 
     private float GeneratePlatform()
     {
+        
         GameObject plat = ObjectPoolManager.singleton.SpawnObject(platformPools[Random.Range(0,platformPools.Length)]);
-        plat.transform.position = new Vector3(10
-            , Random.Range(-2f, 0f));
+        plat.transform.position = new Vector3(OFFSET
+            , currentHeight);
         plat.transform.SetParent(platformParent);
-        GameEvents.InvokeSpeedIncrease();
         return plat.GetComponent<BoxCollider2D>().size.x;
     }
 
     private void GenerateHazardousObstacle()
     {
-
+        GameObject haz = ObjectPoolManager.singleton.SpawnObject(hazardPools[Random.Range(0, hazardPools.Length)]);
+        haz.transform.position = new Vector3(OFFSET
+            , currentHeight);
+        haz.transform.SetParent(hazardParent);
     }
 
     private void GenerateObstacle()
     {
         GameObject obs = ObjectPoolManager.singleton.SpawnObject(obstaclePools[Random.Range(0, platformPools.Length)]);
-        obs.transform.position = new Vector3(10
-            , 3);
+        obs.transform.position = new Vector3(OFFSET
+            , currentHeight);
         obs.transform.SetParent(obstacleParent);
         
     }

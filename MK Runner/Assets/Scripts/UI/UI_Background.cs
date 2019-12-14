@@ -5,7 +5,7 @@ using UnityEngine;
 public class UI_Background : MonoBehaviour
 {
 
-
+    //Simple script to scroll the background in time with the game
 
     private Renderer rend;
     private Vector2 offset;

@@ -6,15 +6,12 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager singleton;
-    
-
     public float startingGameSpeed;
     [HideInInspector]
     public float currentGameSpeed;
     public int score;
     bool playerIsAlive = true;
 
-    // Start is called before the first frame update
     void Awake()
     {
         if (singleton == null)

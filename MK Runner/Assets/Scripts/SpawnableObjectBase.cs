@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpawnableObjectBase : MonoBehaviour
 {
+    //Script for all objects the player can interact with
     bool moving = true;
 
     private void Start()
