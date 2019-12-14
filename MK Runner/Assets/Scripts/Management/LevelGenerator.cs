@@ -38,7 +38,7 @@ public class LevelGenerator : MonoBehaviour
 
     IEnumerator Generate()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds((Random.Range(1f, 2f)) / GameManager.singleton.currentGameSpeed);
         
         while (generateNewPlatforms)
         {
@@ -54,7 +54,7 @@ public class LevelGenerator : MonoBehaviour
     private float CalculateTime(float length)
     {
         float x = length / GameManager.singleton.currentGameSpeed;
-        x += (Random.Range(1f, 2.5f) )/ GameManager.singleton.currentGameSpeed;
+        x += (Random.Range(1f, 2f) )/ GameManager.singleton.currentGameSpeed;
         return x;
     }
 

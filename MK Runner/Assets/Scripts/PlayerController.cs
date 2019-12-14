@@ -5,18 +5,21 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Controls the player
-    public float playerSpeed, playerJump;
+    public float playerSpeed, playerJumpVelocity;
     public LayerMask groundLayer;
     public LayerMask deathLayer;
 
     public bool canJump = false;
     public bool alive = false;
+    public bool isJumping = false;
 
 
     private Rigidbody2D playerRB;
     private Collider2D playerCollider;
     private Animator playerAnim;
-    
+    private float jumpCooldown = 0;
+    private Vector3 startPosition;
+
 
     private void Start()
     {
@@ -24,10 +27,16 @@ public class PlayerController : MonoBehaviour
         playerRB = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<Animator>();
         GameEvents.OnGameStart += OnGameStart;
+        startPosition = transform.position;
     }
 
     private void OnGameStart()
     {
+
+        
+        jumpCooldown = 0;
+        transform.position = startPosition;
+        playerRB.simulated = true;
 
         alive = true;
     }
@@ -49,12 +58,46 @@ public class PlayerController : MonoBehaviour
             //Jump on mouse click and if able
             if (Input.GetMouseButtonDown(0) && canJump)
             {
-                Jump();
+                isJumping = true;
+                canJump = false;
+                playerRB.velocity = new Vector2(0, playerJumpVelocity);
+
+
 
             }
 
+            if (isJumping )
+            {
+                if (jumpCooldown <= .25f)
+                {
+                    playerRB.velocity = new Vector2(playerRB.velocity.x, playerJumpVelocity);
+                    jumpCooldown += Time.deltaTime;
+                }
+                else
+                {
+                    isJumping = false;
+                    jumpCooldown = 0;
+                }
+            }
+           
+
+            if (Input.GetMouseButtonUp(0))
+            {
+               
+                isJumping = false;
+                jumpCooldown = 0;
+
+            }
+
+            if (transform.position.x != startPosition.x)
+            {
+               
+                playerRB.velocity = new Vector2((startPosition.x-transform.position.x), playerRB.velocity.y);
+            }
+            
+
             //If player out of bounds, die
-            if(transform.position.y<-5 || transform.position.x < -5)
+            if (transform.position.y<-5 || transform.position.x < -5)
             {
                 Die();
             }
@@ -88,15 +131,11 @@ public class PlayerController : MonoBehaviour
         alive = false;
         GameEvents.InvokePlayerDeath();
         playerRB.SetRotation(90f);
+        playerRB.simulated = false;
         playerAnim.SetTrigger("Death");
        
 
     }
 
-    //player jump
-    private void Jump()
-    {
-        playerRB.velocity += new Vector2(0, playerJump);
-        canJump = false;
-    }
+   
 }
