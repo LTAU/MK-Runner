@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     private void PlayerDeath()
     {
         playerIsAlive = false;
+        currentGameSpeed = 0;
         
         
     }
