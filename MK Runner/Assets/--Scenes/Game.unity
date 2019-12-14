@@ -2324,6 +2324,9 @@ MonoBehaviour:
   - {fileID: 6424063944341072880, guid: 461fdd29bbe202c4e8dbd4912f318613, type: 3}
   - {fileID: 8657595176810646858, guid: ac539e2fefba91b458957178079a2d40, type: 3}
   - {fileID: 5650019631590643424, guid: 1fde475838681c34cb1c4e78a78494e0, type: 3}
+  - {fileID: 8965607990369937943, guid: 1a603f13e65516348a5f7f6fd4306ef9, type: 3}
+  - {fileID: 8856901246331957087, guid: c187c01d53e47d94e84ddff8c9f704bb, type: 3}
+  - {fileID: 523444248368294500, guid: 3b18c7086d5e1a1428d1a7dfeed3210e, type: 3}
   hazards:
   - {fileID: 4788801499525267660, guid: e6ffc68016c7b4d42a0f88ddb2551f72, type: 3}
   obstacles:
@@ -2863,7 +2866,12 @@ PrefabInstance:
     - target: {fileID: 3381270977762724875, guid: 669a3706bc6187244b6c338f87f139a7,
         type: 3}
       propertyPath: m_Size.x
-      value: 0.3
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3381270977762724875, guid: 669a3706bc6187244b6c338f87f139a7,
+        type: 3}
+      propertyPath: m_AutoTiling
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3416288633568238179, guid: 669a3706bc6187244b6c338f87f139a7,
         type: 3}

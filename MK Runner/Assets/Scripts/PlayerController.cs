@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
         alive = true;
     }
 
-    private void OnSpeedChange(int i)
+    private void OnSpeedChange()
     {
         playerAnim.SetFloat("Speed", GameManager.singleton.currentGameSpeed);
     }
@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
         //Check if player hit ground
         if (groundLayer == (groundLayer | (1 << collision.collider.gameObject.layer)))
         {
-            if (!canJump && Vector2.Dot(collision.GetContact(0).point, (transform.position + Vector3.down)) >= .2f)
+            if (!canJump && Vector2.Dot(collision.GetContact(0).point, (transform.position + Vector3.down)) >= .8f)
             {
                 canJump = true;
             }
@@ -157,8 +157,7 @@ public class PlayerController : MonoBehaviour
             case 2:
             case 3:
             case 4:
-                GameEvents.InvokeSpeedIncrease(5);
-                GameEvents.InvokeOnInfoText("Speed Increased!");
+                GameEvents.InvokeSpeedIncrease();
                 break;
 
             

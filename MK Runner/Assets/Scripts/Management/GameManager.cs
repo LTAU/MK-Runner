@@ -62,12 +62,18 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void SpeedIncrease(int i)
+    private void SpeedIncrease()
     {
-        currentGameSpeed*=(1f+(i/10));
+        currentGameSpeed*=1.1f;
         if (currentGameSpeed > maxGameSpeed)
         {
             currentGameSpeed = maxGameSpeed;
+            GameEvents.InvokeOnInfoText("MAX SPEED!");
+
+        }
+        else
+        {
+            GameEvents.InvokeOnInfoText("Speed Increased!");
         }
     }
 

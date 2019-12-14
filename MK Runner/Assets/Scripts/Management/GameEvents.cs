@@ -26,10 +26,10 @@ public static class GameEvents
     
     }
 
-    public static event intDelegate OnSpeedIncrease;
-    public static void InvokeSpeedIncrease(int i)
+    public static event voidDelegate OnSpeedIncrease;
+    public static void InvokeSpeedIncrease()
     {
-        OnSpeedIncrease.Invoke(i);
+        OnSpeedIncrease.Invoke();
     }
 
     public static event voidDelegate OnGameStart;
