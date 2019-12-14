@@ -8,6 +8,8 @@ public static class GameEvents
 
     public delegate void voidDelegate();
     public delegate void intDelegate(int i);
+    public delegate void stringDelegate(string s);
+
 
     public static event voidDelegate OnGameOver;
     public static void InvokeGameOver()
@@ -24,10 +26,10 @@ public static class GameEvents
     
     }
 
-    public static event voidDelegate OnSpeedIncrease;
-    public static void InvokeSpeedIncrease()
+    public static event intDelegate OnSpeedIncrease;
+    public static void InvokeSpeedIncrease(int i)
     {
-        OnSpeedIncrease.Invoke();
+        OnSpeedIncrease.Invoke(i);
     }
 
     public static event voidDelegate OnGameStart;
@@ -48,4 +50,11 @@ public static class GameEvents
         OnScoreChanged.Invoke(i);
     }
 
+    public static event stringDelegate OnInfoText;
+    public static void InvokeOnInfoText(string s)
+    {
+        OnInfoText.Invoke(s);
+    }
+
+    public static int HIGHSCORE=0;
 }

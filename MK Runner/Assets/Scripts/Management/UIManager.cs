@@ -8,17 +8,27 @@ public class UIManager : MonoBehaviour
     //Script to control the UI
     public Text title;
     public Text score;
+    public Text highScore;
     public GameObject menuUI;
+    public Text info;
 
     private void Start()
     {
         GameEvents.OnScoreChanged += UpdateScore;
         GameEvents.OnGameOver += OnGameOver;
+        GameEvents.OnInfoText += UpdateInfo;
     }
+
+   
 
     private void UpdateScore(int value)
     {
         score.text = value.ToString();
+        if (value > GameEvents.HIGHSCORE)
+        {
+            GameEvents.HIGHSCORE = value;
+            highScore.text = value.ToString();
+        }
     }
 
 
@@ -30,6 +40,20 @@ public class UIManager : MonoBehaviour
 
     public void QuitPress()
     {
+
+    }
+
+    private void UpdateInfo(string _text)
+    {
+        info.gameObject.SetActive(true);
+        info.text = _text;
+        StartCoroutine(Cooldown());
+    }
+
+    IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(3f);
+        info.gameObject.SetActive(false);
 
     }
 

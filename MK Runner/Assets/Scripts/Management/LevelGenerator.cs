@@ -76,7 +76,6 @@ public class LevelGenerator : MonoBehaviour
         {
             if (platformTimer <= 0f)
             {
-                GameEvents.InvokeSpeedIncrease();
 
                 yield return new WaitForSeconds(CalculateGapTime());
                 currentHeight = Random.Range(-1f, 1f);

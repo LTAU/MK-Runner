@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
         alive = true;
     }
 
-    private void OnSpeedChange()
+    private void OnSpeedChange(int i)
     {
         playerAnim.SetFloat("Speed", GameManager.singleton.currentGameSpeed);
     }
@@ -149,24 +149,43 @@ public class PlayerController : MonoBehaviour
     //Item pickup give random effect
     private void ItemPickup()
     {
-        int i = Random.Range(0, 5);
+        int i = Random.Range(0, 10);
         switch (i)
         {
             case 0:
-                GameEvents.InvokeMaxSpeedChange(1);
-                break;
-
             case 1:
-                GameEvents.InvokeMaxSpeedChange(-1);
-                break;
-
             case 2:
-                playerJumpDistance +=.1f;
+            case 3:
+            case 4:
+                GameEvents.InvokeSpeedIncrease(5);
+                GameEvents.InvokeOnInfoText("Speed Increased!");
                 break;
 
-            case 3:
-                playerJumpVelocity += .5f;
+            
+
+            case 5:
+                GameEvents.InvokeMaxSpeedChange(-1);
+                GameEvents.InvokeOnInfoText("Max Speed Increased!");
+
                 break;
+
+            case 6:
+            case 7:
+                playerJumpDistance +=.1f;
+                GameEvents.InvokeOnInfoText("Jump Duration Increased!");
+
+                break;
+
+            case 8:
+            case 9:
+                playerJumpVelocity += .5f;
+                GameEvents.InvokeOnInfoText("Jump Velocity Increased!");
+
+                break;
+
+            
+
+                
 
             default:
                 break;
@@ -179,12 +198,17 @@ public class PlayerController : MonoBehaviour
     {
         alive = false;
         GameEvents.InvokePlayerDeath();
-        playerRB.SetRotation(90f);
-        playerRB.simulated = false;
-        playerAnim.SetTrigger("Death");
        
+
+        playerAnim.SetTrigger("Death");
+
+        playerRB.simulated = false;
+        playerRB.SetRotation(90f);
+        GameEvents.InvokeOnInfoText("You Died!");
+
+
 
     }
 
-   
+
 }
