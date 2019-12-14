@@ -10,14 +10,19 @@ public class SpawnableObjectBase : MonoBehaviour
     private void Start()
     {
         GameEvents.OnPlayerDeath += OnPlayerDeath;
-        GameEvents.OnGameStart += OnGameStart;
+        GameEvents.OnGameOver += OnGameOver;
+    }
+
+    private void OnGameOver()
+    {
+        Despawn();
     }
 
     private void Update()
     {
         if (moving)
         {
-            transform.position -= new Vector3(GameManager.singleton.currentGameSpeed*Time.deltaTime, 0, 0);
+            transform.position -= new Vector3(GameManager.singleton.currentGameSpeed * Time.deltaTime, 0, 0);
             if (transform.position.x < -25 || transform.position.y < -10)
             {
                 Despawn();
@@ -38,7 +43,7 @@ public class SpawnableObjectBase : MonoBehaviour
         moving = false;
     }
 
-    private void OnGameStart()
+    private void OnEnable()
     {
         moving = true;
     }

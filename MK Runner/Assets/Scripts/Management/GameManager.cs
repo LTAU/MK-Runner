@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
 
     private void SpeedIncrease()
     {
-        currentGameSpeed*=1.1f;
+        currentGameSpeed+=0.5f;
         if (currentGameSpeed > maxGameSpeed)
         {
             currentGameSpeed = maxGameSpeed;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Controls the player
-    public float playerSpeed, playerJumpVelocity, playerJumpDistance;
+    public float startingJumpVelocity, startingJumpDistance;
     public LayerMask groundLayer;
     public LayerMask deathLayer;
     public LayerMask itemLayer;
@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private Animator playerAnim;
     private float jumpCooldown = 0;
     private Vector3 startPosition;
+    private float playerJumpVelocity, playerJumpDistance;
 
 
     private void Start()
@@ -34,13 +35,16 @@ public class PlayerController : MonoBehaviour
 
     private void OnGameStart()
     {
-
+        playerJumpDistance = startingJumpDistance;
+        playerJumpVelocity = startingJumpVelocity;
         
         jumpCooldown = 0;
         transform.position = startPosition;
         playerRB.simulated = true;
-        playerAnim.Play("Run");
+       
         alive = true;
+        playerAnim.Play("Run");
+        playerAnim.SetFloat("Speed", 2);
     }
 
     private void OnSpeedChange()
