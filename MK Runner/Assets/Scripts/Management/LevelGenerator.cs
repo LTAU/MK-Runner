@@ -8,6 +8,7 @@ public class LevelGenerator : MonoBehaviour
     public GameObject[] platforms;
     public GameObject[] hazards;
     public GameObject[] obstacles;
+    public GameObject item;
 
     public Transform obstacleParent;
     public Transform platformParent;
@@ -17,6 +18,7 @@ public class LevelGenerator : MonoBehaviour
     private int[] platformPools;
     private int[] obstaclePools;
     private int[] hazardPools;
+    private int itemPool;
     private int OFFSET = 10;
 
     private bool generateNewPlatforms = true;
@@ -50,7 +52,7 @@ public class LevelGenerator : MonoBehaviour
             hazardPools[i] = ObjectPoolManager.singleton.CreatePool(hazards[i]);
         }
 
-
+        itemPool = ObjectPoolManager.singleton.CreatePool(item);
 
 
         GameEvents.OnPlayerDeath += OnPlayerDeath;
@@ -92,9 +94,13 @@ public class LevelGenerator : MonoBehaviour
                 GenerateHazardousObstacle();
 
             }
+            else if (spawnChance <= .025f)
+            {
+                GenerateItem();
+            }
 
 
-                yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.1f);
             platformTimer -= .1f;
 
         }
@@ -135,7 +141,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void GenerateObstacle()
     {
-        GameObject obs = ObjectPoolManager.singleton.SpawnObject(obstaclePools[Random.Range(0, platformPools.Length)]);
+        GameObject obs = ObjectPoolManager.singleton.SpawnObject(obstaclePools[Random.Range(0, obstaclePools.Length)]);
         obs.transform.position = new Vector3(OFFSET
             , currentHeight);
         obs.transform.SetParent(obstacleParent);
@@ -144,7 +150,10 @@ public class LevelGenerator : MonoBehaviour
 
     private void GenerateItem()
     {
-
+        GameObject itm = ObjectPoolManager.singleton.SpawnObject(itemPool);
+        itm.transform.position = new Vector3(OFFSET
+            , currentHeight);
+        itm.transform.SetParent(obstacleParent);
     }
 
     private void OnPlayerDeath()

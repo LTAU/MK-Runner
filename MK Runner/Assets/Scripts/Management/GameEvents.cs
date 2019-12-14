@@ -41,4 +41,11 @@ public static class GameEvents
     {
         OnScoreChanged.Invoke(i);
     }
+
+    public static event intDelegate OnMaxSpeedChanged;
+    public static void InvokeMaxSpeedChange(int i)
+    {
+        OnScoreChanged.Invoke(i);
+    }
+
 }

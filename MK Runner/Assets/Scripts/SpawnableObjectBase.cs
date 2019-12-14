@@ -25,7 +25,7 @@ public class SpawnableObjectBase : MonoBehaviour
         }
     }
 
-    private void Despawn()
+    public void Despawn()
     {
         gameObject.SetActive(false);
         transform.position = Vector3.zero;

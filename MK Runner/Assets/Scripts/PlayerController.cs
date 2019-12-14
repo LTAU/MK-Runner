@@ -5,9 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Controls the player
-    public float playerSpeed, playerJumpVelocity;
+    public float playerSpeed, playerJumpVelocity, playerJumpDistance;
     public LayerMask groundLayer;
     public LayerMask deathLayer;
+    public LayerMask itemLayer;
 
     public bool canJump = false;
     public bool alive = false;
@@ -75,7 +76,7 @@ public class PlayerController : MonoBehaviour
             //Continue jumping for up to 1/4 a second
             if (isJumping )
             {
-                if (jumpCooldown <= .25f)
+                if (jumpCooldown <= playerJumpDistance)
                 {
                     playerRB.velocity = new Vector2(playerRB.velocity.x, playerJumpVelocity);
                     jumpCooldown += Time.deltaTime;
@@ -124,7 +125,7 @@ public class PlayerController : MonoBehaviour
         //Check if player hit ground
         if (groundLayer == (groundLayer | (1 << collision.collider.gameObject.layer)))
         {
-            if (!canJump && Vector2.Dot(collision.GetContact(0).point, (transform.position + Vector3.down)) >= .35f)
+            if (!canJump && Vector2.Dot(collision.GetContact(0).point, (transform.position + Vector3.down)) >= .2f)
             {
                 canJump = true;
             }
@@ -137,7 +138,41 @@ public class PlayerController : MonoBehaviour
 
         }
 
+        if(itemLayer == (itemLayer | (1 << collision.collider.gameObject.layer)))
+        {
+            collision.collider.GetComponent<SpawnableObjectBase>().Despawn();
+            ItemPickup();
+        }
+
     }
+
+    //Item pickup give random effect
+    private void ItemPickup()
+    {
+        int i = Random.Range(0, 5);
+        switch (i)
+        {
+            case 0:
+                GameEvents.InvokeMaxSpeedChange(1);
+                break;
+
+            case 1:
+                GameEvents.InvokeMaxSpeedChange(-1);
+                break;
+
+            case 2:
+                playerJumpDistance +=.1f;
+                break;
+
+            case 3:
+                playerJumpVelocity += .5f;
+                break;
+
+            default:
+                break;
+        }
+    }
+
 
     //player death
     private void Die()

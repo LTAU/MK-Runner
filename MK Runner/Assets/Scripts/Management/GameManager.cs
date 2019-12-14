@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public float startingGameSpeed;
     [HideInInspector]
     public float currentGameSpeed;
+    public float maxGameSpeed;
     public int score;
     bool playerIsAlive = true;
 
@@ -30,12 +31,16 @@ public class GameManager : MonoBehaviour
         GameEvents.OnPlayerDeath += PlayerDeath;
         GameEvents.OnSpeedIncrease += SpeedIncrease;
         GameEvents.OnGameStart += OnGameStart;
+        GameEvents.OnMaxSpeedChanged += MaxSpeedChanged;
+
     }
 
     private void OnGameStart()
     {
         currentGameSpeed = startingGameSpeed;
         playerIsAlive = true;
+        score = 0;
+        GameEvents.InvokeScoreChange(score);
         StartCoroutine(RunSession());
     }
 
@@ -45,7 +50,7 @@ public class GameManager : MonoBehaviour
         {
             score += 1;
             GameEvents.InvokeScoreChange(score);
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(1/currentGameSpeed);
 
 
         }
@@ -60,10 +65,16 @@ public class GameManager : MonoBehaviour
     private void SpeedIncrease()
     {
         currentGameSpeed*=1.1f;
-        if (currentGameSpeed > 5)
+        if (currentGameSpeed > maxGameSpeed)
         {
-            currentGameSpeed = 5f;
+            currentGameSpeed = maxGameSpeed;
         }
+    }
+
+
+    private void MaxSpeedChanged(int value)
+    {
+        maxGameSpeed += value;
     }
 
     private void PlayerDeath()

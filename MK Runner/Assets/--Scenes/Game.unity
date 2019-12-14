@@ -1964,6 +1964,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingGameSpeed: 2
   currentGameSpeed: 0
+  maxGameSpeed: 5
   score: 0
 --- !u!4 &2039859477
 Transform:
@@ -2015,6 +2016,7 @@ MonoBehaviour:
   - {fileID: 8121247143000001987, guid: 46aca3db439a844409b37f691826bed5, type: 3}
   - {fileID: 6761128114324590208, guid: c2d97e6485857784783f3d253956dbe4, type: 3}
   - {fileID: 6603319266993997806, guid: fe7508a36add88f44989d8cf0adff6ff, type: 3}
+  item: {fileID: 7850891257445879375, guid: 86581e259ef570443a27055c1e5d81f3, type: 3}
   obstacleParent: {fileID: 489568681}
   platformParent: {fileID: 848372224}
   hazardParent: {fileID: 1786829544}
@@ -2504,6 +2506,14 @@ PrefabInstance:
     - target: {fileID: 514737599, guid: 669a3706bc6187244b6c338f87f139a7, type: 3}
       propertyPath: playerJumpVelocity
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 514737599, guid: 669a3706bc6187244b6c338f87f139a7, type: 3}
+      propertyPath: playerJumpDistance
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 514737599, guid: 669a3706bc6187244b6c338f87f139a7, type: 3}
+      propertyPath: itemLayer.m_Bits
+      value: 8192
       objectReference: {fileID: 0}
     - target: {fileID: 965153144097903945, guid: 669a3706bc6187244b6c338f87f139a7,
         type: 3}
