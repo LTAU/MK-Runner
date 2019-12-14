@@ -7,8 +7,16 @@ public class LevelGenerator : MonoBehaviour
 
     public GameObject[] platforms;
     public GameObject hazards;
+    public GameObject[] obstacles;
+
+    public Transform obstacleParent;
+    public Transform platformParent;
+    public Transform hazardParent;
+
 
     private int[] platformPools;
+    private int[] obstaclePools;
+
     private bool generateNewPlatforms = true;
     private float platformLength;
 
@@ -21,6 +29,13 @@ public class LevelGenerator : MonoBehaviour
             platformPools[i]= ObjectPoolManager.singleton.CreatePool(platforms[i]);
         }
 
+        obstaclePools = new int[obstacles.Length];
+        for (int i = 0; i < obstacles.Length; i++)
+        {
+
+            obstaclePools[i] = ObjectPoolManager.singleton.CreatePool(obstacles[i]);
+        }
+
 
 
 
@@ -31,6 +46,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void OnGameStart()
     {
+        generateNewPlatforms = true;
 
         StartCoroutine(Generate());
 
@@ -44,7 +60,10 @@ public class LevelGenerator : MonoBehaviour
         {
 
             platformLength = GeneratePlatform();
-            yield return new WaitForSeconds(CalculateTime(platformLength));
+            yield return new WaitForSeconds(CalculateTime(platformLength)/2);
+                            GenerateObstacle();
+            yield return new WaitForSeconds(CalculateTime(platformLength)/2);
+            yield return new WaitForSeconds(CalculateGapTime());
         }
 
     }
@@ -53,9 +72,12 @@ public class LevelGenerator : MonoBehaviour
     //Also adds a random gap between 1 and 3 units
     private float CalculateTime(float length)
     {
-        float x = length / GameManager.singleton.currentGameSpeed;
-        x += (Random.Range(1f, 2f) )/ GameManager.singleton.currentGameSpeed;
-        return x;
+        return length / GameManager.singleton.currentGameSpeed; ;
+    }
+
+    private float CalculateGapTime()
+    {
+        return (Random.Range(1f, 2f)) / GameManager.singleton.currentGameSpeed;
     }
 
     
@@ -65,6 +87,7 @@ public class LevelGenerator : MonoBehaviour
         GameObject plat = ObjectPoolManager.singleton.SpawnObject(platformPools[Random.Range(0,platformPools.Length)]);
         plat.transform.position = new Vector3(10
             , Random.Range(-2f, 0f));
+        plat.transform.SetParent(platformParent);
         GameEvents.InvokeSpeedIncrease();
         return plat.GetComponent<BoxCollider2D>().size.x;
     }
@@ -76,7 +99,11 @@ public class LevelGenerator : MonoBehaviour
 
     private void GenerateObstacle()
     {
-
+        GameObject obs = ObjectPoolManager.singleton.SpawnObject(obstaclePools[Random.Range(0, platformPools.Length)]);
+        obs.transform.position = new Vector3(10
+            , 3);
+        obs.transform.SetParent(obstacleParent);
+        
     }
 
     private void GenerateItem()
