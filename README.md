@@ -1,5 +1,5 @@
 # MK-Runner
-Mighty Kingdom programming test by Liam Turner
+Mighty Kingdom programming test
 
 
 
