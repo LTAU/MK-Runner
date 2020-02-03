@@ -6,11 +6,13 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     //Script to control the UI
-    public Text title;
-    public Text score;
-    public Text highScore;
-    public GameObject menuUI;
-    public Text info;
+    [SerializeField]
+    private Text title,
+     score,
+     highScore,
+     info;
+    [SerializeField]
+    private GameObject menuUI;
 
     private void Start()
     {
@@ -18,8 +20,6 @@ public class UIManager : MonoBehaviour
         GameEvents.OnGameOver += OnGameOver;
         GameEvents.OnInfoText += UpdateInfo;
     }
-
-   
 
     private void UpdateScore(int value)
     {
@@ -31,8 +31,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
-
     public void PlayPressed()
     {
         GameEvents.InvokeGameStart();
@@ -40,13 +38,13 @@ public class UIManager : MonoBehaviour
 
     public void QuitPress()
     {
-#if UNITY_EDITOR
+    #if UNITY_EDITOR
         // Application.Quit() does not work in the editor so
         // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
         UnityEditor.EditorApplication.isPlaying = false;
-#else
+    #else
          Application.Quit();
-#endif
+    #endif
     }
 
     private void UpdateInfo(string _text)
@@ -60,7 +58,6 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         info.gameObject.SetActive(false);
-
     }
 
     private void OnGameOver()

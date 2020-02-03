@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnableObjectBase : MonoBehaviour
 {
     //Script for all objects the player can interact with
-    bool moving = true;
+    private bool moving = true;
 
     private void Start()
     {
@@ -35,7 +35,6 @@ public class SpawnableObjectBase : MonoBehaviour
         gameObject.SetActive(false);
         transform.position = Vector3.zero;
         transform.SetParent(ObjectPoolManager.singleton.transform);
-
     }
 
     private void OnPlayerDeath()

@@ -5,23 +5,21 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Controls the player
-    public float startingJumpVelocity, startingJumpDistance;
-    public LayerMask groundLayer;
-    public LayerMask deathLayer;
-    public LayerMask itemLayer;
-
-    public bool canJump = false;
-    public bool alive = false;
-    public bool isJumping = false;
-
-
+    public float startingJumpVelocity
+    , startingJumpDistance;
+    [SerializeField]
+    private LayerMask groundLayer
+    , deathLayer
+    , itemLayer;
+    private bool canJump = false
+    , alive = false
+    , isJumping = false;
     private Rigidbody2D playerRB;
     private Collider2D playerCollider;
     private Animator playerAnim;
     private float jumpCooldown = 0;
     private Vector3 startPosition;
     private float playerJumpVelocity, playerJumpDistance;
-
 
     private void Start()
     {
@@ -37,11 +35,9 @@ public class PlayerController : MonoBehaviour
     {
         playerJumpDistance = startingJumpDistance;
         playerJumpVelocity = startingJumpVelocity;
-        
         jumpCooldown = 0;
         transform.position = startPosition;
         playerRB.simulated = true;
-       
         alive = true;
         playerAnim.Play("Run");
         playerAnim.SetFloat("Speed", 2);
@@ -62,9 +58,7 @@ public class PlayerController : MonoBehaviour
             /* if (Input.touchCount > 0)
              {
                  Jump();
-
-
-             }*/
+            }*/
 
             //Jump on mouse click and if able
             if (Input.GetMouseButtonDown(0) && canJump)
@@ -73,12 +67,10 @@ public class PlayerController : MonoBehaviour
                 canJump = false;
                 playerRB.velocity = new Vector2(0, playerJumpVelocity);
                 playerAnim.SetBool("isJumping", true);
-
-
             }
 
             //Continue jumping for up to 1/4 a second
-            if (isJumping )
+            if (isJumping)
             {
                 if (jumpCooldown <= playerJumpDistance)
                 {
@@ -90,37 +82,33 @@ public class PlayerController : MonoBehaviour
                     CompleteJump();
                 }
             }
-           
+
             //Stop jumping if click is released
             if (Input.GetMouseButtonUp(0))
             {
-
-                CompleteJump();
-
+                CompleteJump();         
             }
 
             //if playercharacter is out of position, aim to move back into position
             if (transform.position.x != startPosition.x)
             {
-               
-                playerRB.velocity = new Vector2((startPosition.x-transform.position.x), playerRB.velocity.y);
+                playerRB.velocity = new Vector2((startPosition.x - transform.position.x), playerRB.velocity.y);
             }
-            
+
 
             //If player out of bounds, die
-            if (transform.position.y<-5 || transform.position.x < -5)
+            if (transform.position.y < -5 || transform.position.x < -5)
             {
                 Die();
             }
         }
-       
+
     }
 
     private void CompleteJump()
     {
         isJumping = false;
         playerAnim.SetBool("isJumping", false);
-
         jumpCooldown = 0;
     }
 
@@ -139,15 +127,13 @@ public class PlayerController : MonoBehaviour
         if (deathLayer == (deathLayer | (1 << collision.collider.gameObject.layer)))
         {
             Die();
-
         }
 
-        if(itemLayer == (itemLayer | (1 << collision.collider.gameObject.layer)))
+        if (itemLayer == (itemLayer | (1 << collision.collider.gameObject.layer)))
         {
             collision.collider.GetComponent<SpawnableObjectBase>().Despawn();
             ItemPickup();
         }
-
     }
 
     //Item pickup give random effect
@@ -163,55 +149,33 @@ public class PlayerController : MonoBehaviour
             case 4:
                 GameEvents.InvokeSpeedIncrease();
                 break;
-
-            
-
             case 5:
                 GameEvents.InvokeMaxSpeedChange(-1);
                 GameEvents.InvokeOnInfoText("Max Speed Increased!");
-
                 break;
-
             case 6:
             case 7:
-                playerJumpDistance +=.1f;
+                playerJumpDistance += .1f;
                 GameEvents.InvokeOnInfoText("Jump Duration Increased!");
-
                 break;
-
             case 8:
             case 9:
                 playerJumpVelocity += .5f;
                 GameEvents.InvokeOnInfoText("Jump Velocity Increased!");
-
                 break;
-
-            
-
-                
-
             default:
                 break;
         }
     }
-
 
     //player death
     private void Die()
     {
         alive = false;
         GameEvents.InvokePlayerDeath();
-       
-
         playerAnim.SetTrigger("Death");
-
         playerRB.simulated = false;
         playerRB.SetRotation(90f);
         GameEvents.InvokeOnInfoText("You Died!");
-
-
-
     }
-
-
 }

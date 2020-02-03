@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager singleton;
-    public float startingGameSpeed;
     [HideInInspector]
     public float currentGameSpeed;
-    public float maxGameSpeed;
-    public int score;
-    bool playerIsAlive = true;
-
+    [SerializeField]
+    private float startingGameSpeed
+        ,maxGameSpeed;
+    private int score;
+    private bool playerIsAlive = true;
+    
     void Awake()
     {
         if (singleton == null)
         {
-
             singleton = this;
         }
         else
@@ -32,7 +31,6 @@ public class GameManager : MonoBehaviour
         GameEvents.OnSpeedIncrease += SpeedIncrease;
         GameEvents.OnGameStart += OnGameStart;
         GameEvents.OnMaxSpeedChanged += MaxSpeedChanged;
-
     }
 
     private void OnGameStart()
@@ -51,15 +49,9 @@ public class GameManager : MonoBehaviour
             score += 1;
             GameEvents.InvokeScoreChange(score);
             yield return new WaitForSeconds(1/currentGameSpeed);
-
-
         }
         yield return new WaitForSeconds(3f);
         GameEvents.InvokeGameOver();
-
-        
-
-
     }
 
     private void SpeedIncrease()
@@ -69,14 +61,12 @@ public class GameManager : MonoBehaviour
         {
             currentGameSpeed = maxGameSpeed;
             GameEvents.InvokeOnInfoText("MAX SPEED!");
-
         }
         else
         {
             GameEvents.InvokeOnInfoText("Speed Increased!");
         }
     }
-
 
     private void MaxSpeedChanged(int value)
     {
@@ -87,7 +77,5 @@ public class GameManager : MonoBehaviour
     {
         playerIsAlive = false;
         currentGameSpeed = 0;
-        
-        
     }
 }

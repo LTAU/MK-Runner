@@ -4,12 +4,13 @@ using UnityEngine;
 
 public static class GameEvents
 {
-    //Handles ingame events
 
+    public static int HIGHSCORE = 0;
+
+    //Handles ingame events
     public delegate void voidDelegate();
     public delegate void intDelegate(int i);
     public delegate void stringDelegate(string s);
-
 
     public static event voidDelegate OnGameOver;
     public static void InvokeGameOver()
@@ -17,13 +18,10 @@ public static class GameEvents
         OnGameOver.Invoke();
     }
 
-
     public static event voidDelegate OnPlayerDeath;
     public static void InvokePlayerDeath()
     {
-
         OnPlayerDeath.Invoke();
-    
     }
 
     public static event voidDelegate OnSpeedIncrease;
@@ -55,6 +53,4 @@ public static class GameEvents
     {
         OnInfoText.Invoke(s);
     }
-
-    public static int HIGHSCORE=0;
 }
